@@ -9,20 +9,28 @@ export default function BacklinkDashboard() {
   const [loading, setLoading] = useState(false)
 
   const handleGenerate = async () => {
+    if (!targetUrl) return alert("Masukkan Target URL dulu")
     setLoading(true)
     setResult([])
-    const res = await fetch("/api/backlink", {
-      method: "POST",
-      headers: { "Content-Type": "application/json" },
-      body: JSON.stringify({
-        targetUrl,
-        anchors: anchors.split(",").map((a) => a.trim()),
-        count: 3,
-      }),
-    })
-    const data = await res.json()
-    setResult(data.backlinks || [])
-    setLoading(false)
+
+    try {
+      const res = await fetch("/api/backlink", {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({
+          targetUrl,
+          anchors: anchors.split(",").map((a) => a.trim()),
+          count: 3,
+        }),
+      })
+      const data = await res.json()
+      setResult(data.backlinks || [])
+    } catch (err) {
+      console.error(err)
+      alert("Gagal generate backlink")
+    } finally {
+      setLoading(false)
+    }
   }
 
   return (
@@ -67,7 +75,7 @@ export default function BacklinkDashboard() {
             {result.map((item, i) => (
               <li key={i}>
                 <span className="font-medium">{item.platform}:</span>{" "}
-                <a href={item.link} target="_blank" className="text-blue-600 hover:underline">
+                <a href={item.link} target="_blank" rel="noopener noreferrer" className="text-blue-600 hover:underline">
                   {item.link}
                 </a>
               </li>
