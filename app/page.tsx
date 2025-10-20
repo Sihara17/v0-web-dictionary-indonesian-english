@@ -93,21 +93,19 @@ export default function HomePage() {
           menyediakan definisi yang akurat, sinonim, dan antonim untuk ribuan kata.
         </p>
 
-        {/* 🔗 Tambahkan link Backlink di bawah ini */}
+        {/* 🔗 Link Backlink */}
         <div className="mt-6">
           <Link href="/bolagila" className="text-blue-600 hover:underline font-medium">
             Lihat Partner & Backlink
           </Link>
         </div>
+
+        <div className="mt-4">
+          <Link href="/backlink" className="text-blue-600 hover:underline font-medium">
+            Backlink Folder
+          </Link>
+        </div>
       </section>
     </div>
-    <div className="mt-6">
-  <Link
-    href="/backlink" // sesuaikan dengan folder/route yang kamu buat
-    className="text-blue-600 hover:underline font-medium"
-  >
-     Backlink
-  </Link>
-</div>
   )
 }
