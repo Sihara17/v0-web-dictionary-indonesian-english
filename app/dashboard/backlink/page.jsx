@@ -1,0 +1,80 @@
+"use client"
+
+import { useState } from "react"
+
+export default function BacklinkDashboard() {
+  const [targetUrl, setTargetUrl] = useState("")
+  const [anchors, setAnchors] = useState("Contoh Anchor, Situs Terpercaya, Info Lengkap")
+  const [result, setResult] = useState([])
+  const [loading, setLoading] = useState(false)
+
+  const handleGenerate = async () => {
+    setLoading(true)
+    setResult([])
+    const res = await fetch("/api/backlink", {
+      method: "POST",
+      headers: { "Content-Type": "application/json" },
+      body: JSON.stringify({
+        targetUrl,
+        anchors: anchors.split(",").map((a) => a.trim()),
+        count: 3,
+      }),
+    })
+    const data = await res.json()
+    setResult(data.backlinks || [])
+    setLoading(false)
+  }
+
+  return (
+    <div className="container mx-auto px-4 py-8">
+      <h1 className="mb-6 text-3xl font-bold">🔗 Backlink Generator</h1>
+
+      <div className="mb-6 space-y-4">
+        <div>
+          <label className="font-semibold">Target URL:</label>
+          <input
+            type="text"
+            placeholder="https://example.com"
+            value={targetUrl}
+            onChange={(e) => setTargetUrl(e.target.value)}
+            className="mt-1 w-full rounded border p-2"
+          />
+        </div>
+
+        <div>
+          <label className="font-semibold">Anchor Text (pisahkan dengan koma):</label>
+          <input
+            type="text"
+            value={anchors}
+            onChange={(e) => setAnchors(e.target.value)}
+            className="mt-1 w-full rounded border p-2"
+          />
+        </div>
+
+        <button
+          onClick={handleGenerate}
+          disabled={loading}
+          className="rounded bg-blue-600 px-4 py-2 font-bold text-white hover:bg-blue-700 disabled:opacity-50"
+        >
+          {loading ? "Generating..." : "Generate Backlinks"}
+        </button>
+      </div>
+
+      {result.length > 0 && (
+        <div className="mt-6">
+          <h2 className="mb-3 text-2xl font-semibold">Hasil Backlink:</h2>
+          <ul className="list-disc pl-6 space-y-2">
+            {result.map((item, i) => (
+              <li key={i}>
+                <span className="font-medium">{item.platform}:</span>{" "}
+                <a href={item.link} target="_blank" className="text-blue-600 hover:underline">
+                  {item.link}
+                </a>
+              </li>
+            ))}
+          </ul>
+        </div>
+      )}
+    </div>
+  )
+}
