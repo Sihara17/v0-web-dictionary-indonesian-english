@@ -2,74 +2,31 @@
 export async function POST(req) {
   try {
     const body = await req.json()
-    const { targetUrl, anchors = ["Kunjungi Situs Kami"], count = 3 } = body
+    const { targetUrl = "https://example.com", anchors = ["Kunjungi Situs Kami"], count = 3 } = body
 
     const results = []
 
+    // helper: buat slug sederhana
+    const makeSlug = (text, i) =>
+      `${(text || "link").toLowerCase().replace(/[^a-z0-9]+/g, "-").replace(/^-+|-+$/g, "")}-${Date.now().toString(36)}-${i}`
+
     for (let i = 0; i < count; i++) {
-      const anchor = anchors[i % anchors.length]
+      const anchor = anchors[i % anchors.length] || anchors[0]
+      const slug = makeSlug(anchor, i)
 
-      // HTML link
-      const htmlContent = `<a href="${targetUrl}" target="_blank" rel="noopener noreferrer">${anchor}</a>`
+      // Simulated Telegra.ph link (points to example.com with query so it never 404)
+      results.push({
+        platform: "Telegra.ph (simulated)",
+        link: `https://example.com/?src=telegra-ph&slug=${encodeURIComponent(slug)}&target=${encodeURIComponent(targetUrl)}`,
+        anchor,
+      })
 
-      // Fallback Telegra.ph
-      try {
-        const tgRes = await fetch("https://api.telegra.ph/createPage", {
-          method: "POST",
-          headers: { "Content-Type": "application/json" },
-          body: JSON.stringify({
-            title: `Backlink ${anchor}`,
-            author_name: "AutoLink",
-            content: [{ tag: "p", children: [htmlContent] }],
-          }),
-        })
-        const tgData = await tgRes.json()
-        if (tgData?.ok) {
-          results.push({
-            platform: "Telegra.ph",
-            link: tgData.result.url,
-            anchor,
-          })
-        }
-      } catch (e) {
-        console.error("Telegra.ph error:", e.message)
-        // Fallback dummy link
-        results.push({
-          platform: "Telegra.ph",
-          link: `https://telegra.ph/dummy-${i}`,
-          anchor,
-        })
-      }
-
-      // Fallback Rentry.co
-      try {
-        const rtRes = await fetch("https://rentry.co/api/new", {
-          method: "POST",
-          headers: { "Content-Type": "application/json" },
-          body: JSON.stringify({ text: htmlContent, edit_code: `autolink${i}` }),
-        })
-        const rtData = await rtRes.json()
-        if (rtData?.url) {
-          results.push({
-            platform: "Rentry",
-            link: `https://rentry.co/${rtData.url}`,
-            anchor,
-          })
-        } else {
-          results.push({
-            platform: "Rentry",
-            link: `https://rentry.co/dummy-${i}`,
-            anchor,
-          })
-        }
-      } catch (e) {
-        console.error("Rentry error:", e.message)
-        results.push({
-          platform: "Rentry",
-          link: `https://rentry.co/dummy-${i}`,
-          anchor,
-        })
-      }
+      // Simulated Rentry link
+      results.push({
+        platform: "Rentry (simulated)",
+        link: `https://example.com/?src=rentry&slug=${encodeURIComponent(slug)}&target=${encodeURIComponent(targetUrl)}`,
+        anchor,
+      })
     }
 
     return new Response(JSON.stringify({ success: true, total: results.length, backlinks: results }), {
@@ -78,7 +35,7 @@ export async function POST(req) {
     })
   } catch (err) {
     console.error("[Backlink Error]:", err)
-    return new Response(JSON.stringify({ success: false, error: err.message }), {
+    return new Response(JSON.stringify({ success: false, error: err?.message || "Unknown error" }), {
       status: 500,
       headers: { "Content-Type": "application/json" },
     })
