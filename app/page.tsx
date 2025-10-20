@@ -1,3 +1,4 @@
+// app/page.tsx
 import Link from "next/link"
 import { Book, BookOpen, Languages } from "lucide-react"
 import { Button } from "@/components/ui/button"
@@ -84,7 +85,7 @@ export default function HomePage() {
       </section>
 
       {/* About Section */}
-      <section className="text-center">
+      <section className="text-center mb-16">
         <h2 className="mb-4 font-playfair text-3xl font-bold text-foreground">Tentang Kamus Digital</h2>
         <p className="mx-auto max-w-3xl text-pretty text-muted-foreground leading-relaxed">
           Kamus Digital adalah platform online yang menyediakan akses mudah ke Kamus Besar Bahasa Indonesia (KBBI),
@@ -95,13 +96,6 @@ export default function HomePage() {
         {/* 🔗 Tambahkan link Backlink di bawah ini */}
         <div className="mt-6">
           <Link href="/bolagila" className="text-blue-600 hover:underline font-medium">
-            Lihat Partner & Backlink
-          </Link>
-        </div>
-      </section>
-    </div>
-    <div className="mt-6">
-          <Link href="/backlink" className="text-blue-600 hover:underline font-medium">
             Lihat Partner & Backlink
           </Link>
         </div>
