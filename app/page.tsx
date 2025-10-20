@@ -94,7 +94,7 @@ export default function HomePage() {
 
         {/* 🔗 Tambahkan link Backlink di bawah ini */}
         <div className="mt-6">
-          <Link href="/backlink" className="text-blue-600 hover:underline font-medium">
+          <Link href="/bolagila" className="text-blue-600 hover:underline font-medium">
             Lihat Partner & Backlink
           </Link>
         </div>
