@@ -4,44 +4,45 @@ import Link from "next/link"
 
 export default function BacklinkPage() {
   const backlinks = [
-    { url: "http://bolagila.uk.com", text: "Bola Gila" },
-    { url: "http://bolagila.uk.com", text: "Situs Betting Togel" },
-    { url: "http://bolagila.uk.com", text: "Panduan Bola Online" },
-    { url: "http://bolagila.uk.com", text: "Agen Bola Terpercaya" },
+    { url: "http://bolagila.uk.com", text: "Bola Gila", desc: "Situs resmi Bola Gila dan panduan taruhan online." },
+    { url: "http://bolagila.uk.com", text: "Situs Betting Togel", desc: "Informasi dan tips situs betting togel terpercaya." },
+    { url: "https://make.wordpress.org/core/2013/03/12/twenty-thirteen-project-update-march-12-2013/", text: "WordPress Update", desc: "Project update dari WordPress sebagai sumber referensi SEO." },
   ]
 
   return (
     <div className="container mx-auto px-4 py-12">
-      <h1 className="mb-6 text-center font-playfair text-4xl font-bold text-foreground">
+      <h1 className="mb-8 text-center font-playfair text-4xl font-bold text-foreground">
         Partner & Backlink Resources
       </h1>
-
-      <p className="mb-10 text-center text-muted-foreground max-w-2xl mx-auto">
-        Halaman ini menampilkan tautan partner dan sumber referensi eksternal yang relevan dengan topik bahasa, budaya, dan hiburan.
+      <p className="mb-12 text-center text-muted-foreground">
+        Berikut adalah daftar backlink aktif dan partner situs terpercaya yang mendukung proyek ini.
       </p>
 
-      <div className="grid gap-4 md:grid-cols-2 lg:grid-cols-3">
-        {backlinks.map((link, index) => (
+      <div className="grid gap-6 md:grid-cols-2 lg:grid-cols-3">
+        {backlinks.map((link, i) => (
           <div
-            key={index}
-            className="rounded-lg border border-border bg-card p-6 text-center shadow-sm hover:shadow-md transition-shadow"
+            key={i}
+            className="rounded-xl border border-border bg-card p-6 shadow-sm hover:shadow-md transition"
           >
-            <Link
-              href={link.url}
-              target="_blank"
-              rel="noopener noreferrer"
-              className="text-blue-600 hover:underline font-medium"
-            >
-              {link.text}
-            </Link>
+            <h3 className="mb-2 text-lg font-semibold text-card-foreground">
+              <Link
+                href={link.url}
+                target="_blank"
+                rel="noopener noreferrer"
+                className="text-blue-600 hover:underline"
+              >
+                {link.text}
+              </Link>
+            </h3>
+            <p className="text-sm text-muted-foreground">{link.desc}</p>
           </div>
         ))}
       </div>
 
-      <div className="mt-16 text-center text-sm text-muted-foreground">
-        <p>
-          Semua tautan di halaman ini bersifat publik dan berfungsi sebagai referensi tambahan.
-        </p>
+      <div className="mt-12 text-center">
+        <Link href="/" className="text-sm text-blue-600 hover:underline">
+          ← Kembali ke Beranda
+        </Link>
       </div>
     </div>
   )
