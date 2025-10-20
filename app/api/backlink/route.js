@@ -1,9 +1,7 @@
-import axios from "axios"
-
 export async function POST(req) {
   try {
     const body = await req.json()
-    const { targetUrl, anchors = ["Kunjungi Situs"], count = 3 } = body
+    const { targetUrl, anchors = ["Kunjungi Situs Kami"], count = 10 } = body
 
     const results = []
 
@@ -11,50 +9,78 @@ export async function POST(req) {
       const anchor = anchors[i % anchors.length]
       const htmlContent = `<a href="${targetUrl}" target="_blank" rel="noopener noreferrer">${anchor}</a>`
 
-      // 🔹 Pastebin
+      // Pastebin (tanpa API key)
       try {
-        const pb = await axios.post(
-          "https://pastebin.com/api/api_post.php",
-          new URLSearchParams({
-            api_dev_key: "oRANDOMAPIKEY123", // ganti kalau punya key kamu sendiri
-            api_option: "paste",
-            api_paste_code: htmlContent,
-            api_paste_private: 1,
-            api_paste_expire_date: "N",
+        const params = new URLSearchParams({
+          api_dev_key: "oRANDOMAPIKEY123",
+          api_option: "paste",
+          api_paste_code: htmlContent,
+          api_paste_private: "1",
+          api_paste_expire_date: "N",
+        })
+        const pbRes = await fetch("https://pastebin.com/api/api_post.php", {
+          method: "POST",
+          body: params,
+        })
+        const pbUrl = await pbRes.text()
+        results.push({
+          platform: "Pastebin",
+          link: pbUrl,
+          anchor,
+        })
+      } catch (e) {
+        console.error("Pastebin error:", e.message)
+      }
+
+      // Telegra.ph
+      try {
+        const tgRes = await fetch("https://api.telegra.ph/createPage", {
+          method: "POST",
+          headers: { "Content-Type": "application/json" },
+          body: JSON.stringify({
+            title: `Backlink ${anchor}`,
+            author_name: "AutoLink",
+            content: [{ tag: "p", children: [htmlContent] }],
           }),
-        )
-        results.push({ platform: "Pastebin", link: pb.data })
+        })
+        const tgData = await tgRes.json()
+        results.push({
+          platform: "Telegra.ph",
+          link: tgData?.result?.url,
+          anchor,
+        })
       } catch (e) {
-        console.error("Pastebin Error:", e.message)
+        console.error("Telegraph error:", e.message)
       }
 
-      // 🔹 Telegra.ph
+      // Rentry.co
       try {
-        const tg = await axios.post("https://api.telegra.ph/createPage", {
-          title: `Backlink ${anchor}`,
-          author_name: "AutoLink",
-          content: [{ tag: "p", children: [htmlContent] }],
+        const rtRes = await fetch("https://rentry.co/api/new", {
+          method: "POST",
+          headers: { "Content-Type": "application/json" },
+          body: JSON.stringify({ text: htmlContent, edit_code: "autolink" }),
         })
-        results.push({ platform: "Telegra.ph", link: tg.data.result.url })
-      } catch (e) {
-        console.error("Telegraph Error:", e.message)
-      }
-
-      // 🔹 Rentry
-      try {
-        const rt = await axios.post("https://rentry.co/api/new", {
-          text: htmlContent,
-          edit_code: "autolink",
+        const rtData = await rtRes.json()
+        results.push({
+          platform: "Rentry",
+          link: `https://rentry.co/${rtData?.url}`,
+          anchor,
         })
-        results.push({ platform: "Rentry", link: `https://rentry.co/${rt.data.url}` })
       } catch (e) {
-        console.error("Rentry Error:", e.message)
+        console.error("Rentry error:", e.message)
       }
     }
 
-    return Response.json({ success: true, backlinks: results })
+    return Response.json({
+      success: true,
+      total: results.length,
+      backlinks: results,
+    })
   } catch (err) {
-    console.error(err)
-    return Response.json({ success: false, error: err.message }, { status: 500 })
+    console.error("[Backlink Error]:", err)
+    return Response.json(
+      { success: false, error: err.message },
+      { status: 500 }
+    )
   }
 }
