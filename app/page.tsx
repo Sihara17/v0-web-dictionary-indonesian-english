@@ -100,12 +100,5 @@ export default function HomePage() {
           </Link>
         </div>
 
-        <div className="mt-4">
-          <Link href="/dashboard/backlink" className="text-blue-600 hover:underline font-medium">
-            Backlink Folder
-          </Link>
-        </div>
-      </section>
-    </div>
   )
 }
