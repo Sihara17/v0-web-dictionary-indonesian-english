@@ -1,36 +1,14 @@
+// app/api/backlink/route.js
 export async function POST(req) {
   try {
     const body = await req.json()
-    const { targetUrl, anchors = ["Kunjungi Situs Kami"], count = 10 } = body
+    const { targetUrl, anchors = ["Kunjungi Situs Kami"], count = 3 } = body
 
     const results = []
 
     for (let i = 0; i < count; i++) {
       const anchor = anchors[i % anchors.length]
       const htmlContent = `<a href="${targetUrl}" target="_blank" rel="noopener noreferrer">${anchor}</a>`
-
-      // Pastebin (tanpa API key)
-      try {
-        const params = new URLSearchParams({
-          api_dev_key: "oRANDOMAPIKEY123",
-          api_option: "paste",
-          api_paste_code: htmlContent,
-          api_paste_private: "1",
-          api_paste_expire_date: "N",
-        })
-        const pbRes = await fetch("https://pastebin.com/api/api_post.php", {
-          method: "POST",
-          body: params,
-        })
-        const pbUrl = await pbRes.text()
-        results.push({
-          platform: "Pastebin",
-          link: pbUrl,
-          anchor,
-        })
-      } catch (e) {
-        console.error("Pastebin error:", e.message)
-      }
 
       // Telegra.ph
       try {
@@ -44,13 +22,15 @@ export async function POST(req) {
           }),
         })
         const tgData = await tgRes.json()
-        results.push({
-          platform: "Telegra.ph",
-          link: tgData?.result?.url,
-          anchor,
-        })
+        if (tgData?.ok) {
+          results.push({
+            platform: "Telegra.ph",
+            link: tgData.result.url,
+            anchor,
+          })
+        }
       } catch (e) {
-        console.error("Telegraph error:", e.message)
+        console.error("Telegra.ph error:", e.message)
       }
 
       // Rentry.co
@@ -61,26 +41,27 @@ export async function POST(req) {
           body: JSON.stringify({ text: htmlContent, edit_code: "autolink" }),
         })
         const rtData = await rtRes.json()
-        results.push({
-          platform: "Rentry",
-          link: `https://rentry.co/${rtData?.url}`,
-          anchor,
-        })
+        if (rtData?.url) {
+          results.push({
+            platform: "Rentry",
+            link: `https://rentry.co/${rtData.url}`,
+            anchor,
+          })
+        }
       } catch (e) {
         console.error("Rentry error:", e.message)
       }
     }
 
-    return Response.json({
-      success: true,
-      total: results.length,
-      backlinks: results,
+    return new Response(JSON.stringify({ success: true, total: results.length, backlinks: results }), {
+      status: 200,
+      headers: { "Content-Type": "application/json" },
     })
   } catch (err) {
     console.error("[Backlink Error]:", err)
-    return Response.json(
-      { success: false, error: err.message },
-      { status: 500 }
-    )
+    return new Response(JSON.stringify({ success: false, error: err.message }), {
+      status: 500,
+      headers: { "Content-Type": "application/json" },
+    })
   }
 }
