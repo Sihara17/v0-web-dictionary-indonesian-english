@@ -101,5 +101,13 @@ export default function HomePage() {
         </div>
       </section>
     </div>
+    <div className="mt-6">
+  <Link
+    href="/backlink" // sesuaikan dengan folder/route yang kamu buat
+    className="text-blue-600 hover:underline font-medium"
+  >
+     Backlink
+  </Link>
+</div>
   )
 }
