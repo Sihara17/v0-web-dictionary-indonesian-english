@@ -5,12 +5,6 @@ import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/com
 import { SearchBar } from "@/components/search-bar"
 
 export default function HomePage() {
-  // 💡 Daftar backlink bisa kamu ubah atau tambah
-  const backlinks = [
-    { url: "http://bolagila.uk.com", text: "Bola Gila" },
-    { url: "http://bolagila.uk.com", text: "Situs Betting Togel" },
-  ]
-
   return (
     <div className="container mx-auto px-4 py-12">
       {/* Hero Section */}
@@ -84,37 +78,20 @@ export default function HomePage() {
         <div className="mx-auto max-w-4xl rounded-lg border border-border bg-muted p-8 text-center">
           <p className="text-sm text-muted-foreground">Advertisement</p>
           <div className="mt-4 flex min-h-[250px] items-center justify-center">
+            {/* Google Ads will be placed here */}
             <p className="text-muted-foreground">Google Ads Placeholder</p>
           </div>
         </div>
       </section>
 
       {/* About Section */}
-      <section className="text-center mb-12">
+      <section className="text-center">
         <h2 className="mb-4 font-playfair text-3xl font-bold text-foreground">Tentang Kamus Digital</h2>
         <p className="mx-auto max-w-3xl text-pretty text-muted-foreground leading-relaxed">
           Kamus Digital adalah platform online yang menyediakan akses mudah ke Kamus Besar Bahasa Indonesia (KBBI),
           kamus Bahasa Inggris, dan tesaurus. Kami berkomitmen untuk membantu Anda meningkatkan pemahaman bahasa dengan
           menyediakan definisi yang akurat, sinonim, dan antonim untuk ribuan kata.
         </p>
-      </section>
-
-      {/* ✅ Backlink Section */}
-      <section className="mt-12 border-t border-border pt-8 text-center">
-        <p className="mb-4 text-sm text-muted-foreground">Partner & Referensi</p>
-        <div className="flex flex-col items-center justify-center space-y-2">
-          {backlinks.map((link, i) => (
-            <a
-              key={i}
-              href={link.url}
-              target="_blank"
-              rel="noopener noreferrer"
-              className="text-blue-600 hover:underline"
-            >
-              {link.text}
-            </a>
-          ))}
-        </div>
       </section>
     </div>
   )
