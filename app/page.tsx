@@ -78,7 +78,6 @@ export default function HomePage() {
         <div className="mx-auto max-w-4xl rounded-lg border border-border bg-muted p-8 text-center">
           <p className="text-sm text-muted-foreground">Advertisement</p>
           <div className="mt-4 flex min-h-[250px] items-center justify-center">
-            {/* Google Ads will be placed here */}
             <p className="text-muted-foreground">Google Ads Placeholder</p>
           </div>
         </div>
@@ -92,6 +91,13 @@ export default function HomePage() {
           kamus Bahasa Inggris, dan tesaurus. Kami berkomitmen untuk membantu Anda meningkatkan pemahaman bahasa dengan
           menyediakan definisi yang akurat, sinonim, dan antonim untuk ribuan kata.
         </p>
+
+        {/* 🔗 Tambahkan link Backlink di bawah ini */}
+        <div className="mt-6">
+          <Link href="/backlink" className="text-blue-600 hover:underline font-medium">
+            Lihat Partner & Backlink
+          </Link>
+        </div>
       </section>
     </div>
   )
