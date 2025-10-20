@@ -93,12 +93,13 @@ export default function HomePage() {
           menyediakan definisi yang akurat, sinonim, dan antonim untuk ribuan kata.
         </p>
 
-        {/* 🔗 Link Backlink */}
+        {/* Link Backlink */}
         <div className="mt-6">
           <Link href="/bolagila" className="text-blue-600 hover:underline font-medium">
             Lihat Partner & Backlink
           </Link>
         </div>
-
+      </section>
+    </div>
   )
 }
