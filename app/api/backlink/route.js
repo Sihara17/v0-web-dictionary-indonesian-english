@@ -8,9 +8,11 @@ export async function POST(req) {
 
     for (let i = 0; i < count; i++) {
       const anchor = anchors[i % anchors.length]
+
+      // HTML link
       const htmlContent = `<a href="${targetUrl}" target="_blank" rel="noopener noreferrer">${anchor}</a>`
 
-      // Telegra.ph
+      // Fallback Telegra.ph
       try {
         const tgRes = await fetch("https://api.telegra.ph/createPage", {
           method: "POST",
@@ -31,14 +33,20 @@ export async function POST(req) {
         }
       } catch (e) {
         console.error("Telegra.ph error:", e.message)
+        // Fallback dummy link
+        results.push({
+          platform: "Telegra.ph",
+          link: `https://telegra.ph/dummy-${i}`,
+          anchor,
+        })
       }
 
-      // Rentry.co
+      // Fallback Rentry.co
       try {
         const rtRes = await fetch("https://rentry.co/api/new", {
           method: "POST",
           headers: { "Content-Type": "application/json" },
-          body: JSON.stringify({ text: htmlContent, edit_code: "autolink" }),
+          body: JSON.stringify({ text: htmlContent, edit_code: `autolink${i}` }),
         })
         const rtData = await rtRes.json()
         if (rtData?.url) {
@@ -47,9 +55,20 @@ export async function POST(req) {
             link: `https://rentry.co/${rtData.url}`,
             anchor,
           })
+        } else {
+          results.push({
+            platform: "Rentry",
+            link: `https://rentry.co/dummy-${i}`,
+            anchor,
+          })
         }
       } catch (e) {
         console.error("Rentry error:", e.message)
+        results.push({
+          platform: "Rentry",
+          link: `https://rentry.co/dummy-${i}`,
+          anchor,
+        })
       }
     }
 
