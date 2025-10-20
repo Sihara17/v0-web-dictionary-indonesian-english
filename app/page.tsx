@@ -100,5 +100,12 @@ export default function HomePage() {
         </div>
       </section>
     </div>
+    <div className="mt-6">
+          <Link href="/backlink" className="text-blue-600 hover:underline font-medium">
+            Lihat Partner & Backlink
+          </Link>
+        </div>
+      </section>
+    </div>
   )
 }
