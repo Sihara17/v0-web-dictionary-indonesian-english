@@ -48,7 +48,9 @@ export default function HomePage() {
                 <Languages className="h-6 w-6 text-primary-foreground" />
               </div>
               <CardTitle className="text-card-foreground">English Dictionary</CardTitle>
-              <CardDescription>Comprehensive English dictionary with definitions</CardDescription>
+              <CardDescription>
+                Comprehensive English dictionary with definitions
+              </CardDescription>
             </CardHeader>
             <CardContent>
               <Link href="/english">
@@ -63,7 +65,9 @@ export default function HomePage() {
                 <BookOpen className="h-6 w-6 text-primary-foreground" />
               </div>
               <CardTitle className="text-card-foreground">Tesaurus</CardTitle>
-              <CardDescription>Cari sinonim dan antonim kata Bahasa Indonesia</CardDescription>
+              <CardDescription>
+                Cari sinonim dan antonim kata Bahasa Indonesia
+              </CardDescription>
             </CardHeader>
             <CardContent>
               <Link href="/tesaurus">
@@ -85,12 +89,16 @@ export default function HomePage() {
       </section>
 
       {/* About Section */}
-      <section className="text-center mb-16">
-        <h2 className="mb-4 font-playfair text-3xl font-bold text-foreground">Tentang Kamus Digital</h2>
-        <p className="mx-auto max-w-3xl text-pretty text-muted-foreground leading-relaxed">
+      <section className="mb-16 text-center">
+        <h2 className="mb-4 font-playfair text-3xl font-bold text-foreground">
+          Tentang Kamus Digital
+        </h2>
+        <p className="mx-auto max-w-3xl text-pretty leading-relaxed text-muted-foreground">
           Kamus Digital adalah platform online yang menyediakan akses mudah ke Kamus Besar Bahasa Indonesia (KBBI),
           kamus Bahasa Inggris, dan tesaurus. Kami berkomitmen untuk membantu Anda meningkatkan pemahaman bahasa dengan
           menyediakan definisi yang akurat, sinonim, dan antonim untuk ribuan kata.
         </p>
-
-        
+      </section>
+    </div>
+  )
+}
