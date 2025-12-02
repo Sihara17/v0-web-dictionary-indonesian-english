@@ -27,9 +27,9 @@ export const metadata: Metadata = {
 
 export default function RootLayout({
   children,
-}: Readonly<{
+}: {
   children: React.ReactNode
-}>) {
+}) {
   return (
     <html lang="id">
       <body
@@ -46,27 +46,13 @@ export default function RootLayout({
         {/* Vercel Analytics */}
         <Analytics />
 
-        {/* Ahrefs Analytics - External Script */}
+        {/* Ahrefs Analytics (gabungan, cukup 1x) */}
         <Script
+          id="ahrefs-analytics"
           src="https://analytics.ahrefs.com/analytics.js"
           data-key="+nqJ/pnnXvEOtN37JvNtNQ"
           async
           strategy="afterInteractive"
-        />
-
-        {/* Ahrefs Analytics - Inline Loader */}
-        <Script
-          id="ahrefs-analytics-inline"
-          strategy="afterInteractive"
-          dangerouslySetInnerHTML={{
-            __html: `
-              var ahrefs_analytics_script = document.createElement('script');
-              ahrefs_analytics_script.async = true;
-              ahrefs_analytics_script.src = 'https://analytics.ahrefs.com/analytics.js';
-              ahrefs_analytics_script.setAttribute('data-key', '+nqJ/pnnXvEOtN37JvNtNQ');
-              document.getElementsByTagName('head')[0].appendChild(ahrefs_analytics_script);
-            `,
-          }}
         />
       </body>
     </html>
