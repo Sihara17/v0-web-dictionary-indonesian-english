@@ -1,0 +1,9 @@
+# *
+User-agent: *
+Allow: /
+
+# Host
+Host: https://v0-web-dictionary-indonesian-englis.vercel.app
+
+# Sitemaps
+Sitemap: https://v0-web-dictionary-indonesian-englis.vercel.app/sitemap.xml
