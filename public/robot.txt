@@ -1,4 +1,3 @@
 User-agent: *
-Allow: /
-
-Sitemap: https://yourdomain.com/sitemap.xml
+Disallow: 
+Sitemap: https://v0-web-dictionary-indonesian-englis.vercel.app/sitemap.xml
